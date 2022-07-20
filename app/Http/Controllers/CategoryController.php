@@ -97,8 +97,10 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         Category::find($id)->delete();
+        //làm thêm xóa danh mục xóa luôn film và tập film
         return redirect()->back();
     }
+    //sắp xếp thứ tự hiển thị danh mục
     public function resorting(Request  $request){
         $data = $request->all();
 

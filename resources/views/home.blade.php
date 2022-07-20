@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    welcome
+                    Đây là khu vực quản trị dành cho admin!
                 </div>
             </div>
         </div>

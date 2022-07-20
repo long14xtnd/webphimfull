@@ -22,10 +22,10 @@
                      @foreach($movie as $key => $mov)
                      <article class="col-md-3 col-sm-3 col-xs-6 thumb grid-item post-37606">
                         <div class="halim-item">
-                           <a class="halim-thumb" href="{{route('movie',$mov->slug)}}">
+                           <a class="halim-thumb" href="{{ route('movie',['slug'=>$mov->slug,'id'=>$mov->id]) }}">
                               <figure><img class="lazy img-responsive" src="{{asset('uploads/movie/'.$mov->image)}}" alt="BẠN CÙNG PHÒNG CỦA TÔI LÀ GUMIHO" title="{{$mov->title}}"></figure>
                               <span class="status">
-                                 
+
                                    @if($mov->resolution==0)
                                               HD
                                           @elseif($mov->resolution==1)
@@ -36,7 +36,7 @@
                                              Cam
                                           @elseif($mov->resolution==4)
                                             FullHD
-                                          @else 
+                                          @else
                                             Trailer
 
                                           @endif
@@ -48,7 +48,7 @@
                                       @else
                                         Thuyết minh - Tập 1/{{$mov->sotap}}
                                       @endif
-                              </span> 
+                              </span>
 
                               <div class="icon_overlay"></div>
                               <div class="halim-post-title-box">
@@ -61,7 +61,7 @@
                         </div>
                      </article>
                      @endforeach
-                  
+
                   </div>
                   <div class="clearfix"></div>
                   <div class="text-center">

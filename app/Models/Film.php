@@ -22,7 +22,6 @@ class Film extends Model
     public function country(){
       return $this->belongsTo(Country::class,'country_id');
     }
-
     public function film_genre(){
       return $this->belongsToMany(Genre::class,'film_genre','film_id','genre_id');
     }

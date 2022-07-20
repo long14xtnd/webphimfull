@@ -113,13 +113,15 @@ class EpisodeController extends Controller
         if($movie->thuocphim=='phimbo'){
            for($i=1;$i<=$movie->sotap;$i++){
             $output.='<option value="'.$i.'">'.$i.'</option>';
-            }  
+            }
         }else{
            $output.='<option value="HD">HD</option>
-           <option value="FullHD">FullHD</option>'; 
+           <option value="FullHD">FullHD</option>
+           <option value="Cam">Cam</option>
+           <option value="HDCam">HDCam</option>';
 
         }
-        
+
 
         echo $output;
     }

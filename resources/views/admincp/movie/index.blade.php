@@ -57,7 +57,7 @@
                        Cam
                     @elseif($cate->resolution==4)
                       FullHD
-                    @else 
+                    @else
                       Trailer
 
                     @endif
@@ -69,7 +69,7 @@
                       Thuyết minh
                     @endif
                   </td>
-                
+
                   <!-- <td>{{$cate->description}}</td> -->
                   <td>{{$cate->slug}}</td>
                   <td>
@@ -79,6 +79,7 @@
                         Không hiển thị
                     @endif
                   </td>
+{{--                 @php dd($cate->category->title) @endphp--}}
                   <td>{{$cate->category->title}}</td>
                   <td>
                     @if($cate->thuocphim=='phimle')
@@ -92,9 +93,9 @@
                     <span class="badge badge-dark">{{$gen->title}}</span>
                     @endforeach
                   </td>
-                  
 
-                  
+
+
                   <td>{{$cate->country->title}}</td>
 
                   <td>{{$cate->sotap}}</td>
@@ -106,12 +107,12 @@
                   <td>
                      {!! Form::select('topview', ['0'=>'Ngày','1'=>'Tuần','2'=>'Tháng'], isset($cate->topview) ? $cate->topview : '', ['class'=>'select-topview','id'=>$cate->id]) !!}
                   </td>
-                  <td>
-                      {!! Form::open(['method'=>'DELETE','route'=>['movie.destroy',$cate->id],'onsubmit'=>'return confirm("Bạn có chắc muốn xóa?")']) !!}
+                    <td>
+                        {!! Form::open(['method'=>'DELETE','route'=>['movie.destroy',$cate->id],'onsubmit'=>'return confirm("Bạn có chắc muốn xóa?")']) !!}
                         {!! Form::submit('Xóa', ['class'=>'btn btn-danger']) !!}
-                      {!! Form::close() !!}
-                      <a href="{{route('movie.edit',$cate->id)}}" class="btn btn-warning">Sửa</a>
-                  </td>
+                        {!! Form::close() !!}
+                        <a href="{{route('movie.edit',$cate->id)}}" class="btn btn-warning">Sửa</a>
+                    </td>
                 </tr>
                 @endforeach
               </tbody>

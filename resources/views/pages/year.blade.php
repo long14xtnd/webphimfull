@@ -7,11 +7,11 @@
                      <div class="col-xs-6">
                         <div class="yoast_breadcrumb hidden-xs">
                         <span>
-                           <span>Phim thuộc năm » 
-                           @for($year_bread=2000;$year_bread<=2022;$year_bread++)   
-                           <span class="breadcrumb_last" aria-current="page"><a title="{{$year_bread}}" href="{{url('nam/'.$year_bread)}}">{{$year_bread}}</a></span> » 
+                           <span>Phim thuộc năm »
+                           @for($year_bread=2000;$year_bread<=2022;$year_bread++)
+                           <span class="breadcrumb_last" aria-current="page"><a title="{{$year_bread}}" href="{{url('nam/'.$year_bread)}}">{{$year_bread}}</a></span> »
                            @endfor
-                        </span> 
+                        </span>
                         </span>
                      </div>
                      </div>
@@ -30,7 +30,7 @@
                      @foreach($movie as $key => $mov)
                      <article class="col-md-3 col-sm-3 col-xs-6 thumb grid-item post-37606">
                         <div class="halim-item">
-                           <a class="halim-thumb" href="{{route('movie',$mov->slug)}}">
+                           <a class="halim-thumb" href="{{ route('movie',['slug'=>$mov->slug,'id'=>$mov->id]) }}">
                               <figure><img class="lazy img-responsive" src="{{asset('uploads/movie/'.$mov->image)}}" alt="BẠN CÙNG PHÒNG CỦA TÔI LÀ GUMIHO" title="{{$mov->title}}"></figure>
                               <span class="status">
                                   @if($mov->resolution==0)
@@ -43,7 +43,7 @@
                                              Cam
                                           @elseif($mov->resolution==4)
                                             FullHD
-                                          @else 
+                                          @else
                                             Trailer
 
                                           @endif
@@ -54,7 +54,7 @@
                                       @else
                                         Thuyết minh
                                       @endif
-                              </span> 
+                              </span>
                               <div class="icon_overlay"></div>
                               <div class="halim-post-title-box">
                                  <div class="halim-post-title ">

@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card mt-5">
               <a href="{{route('movie.index')}}" class="btn btn-primary">Liệt Kê Danh Sách Phim</a>
                 <div class="card-header">Quản Lý Phim</div>
 
@@ -81,9 +81,10 @@
                             {{-- {!! Form::select('genre_id', $genre, isset($movie) ? $movie->genre_id : '', ['class'=>'form-control']) !!} --}}
                             @foreach($list_genre as $key => $gen)
                                 @if(isset($movie))
+{{--                                    Kiểm tra xem danh sách thể loại có chứa thể loại đang được lấy ra ko,nếu có trả về true,ngược lại trả về false--}}
                             {!! Form::checkbox('genre[]',$gen->id, isset($movie_genre) && $movie_genre->contains($gen->id) ? true : false)  !!}
                                 @else
-                            {!! Form::checkbox('genre[]',$gen->id, '')  !!}    
+                            {!! Form::checkbox('genre[]',$gen->id, '')  !!}
                                 @endif
                             {!! Form::label('genre', $gen->title) !!}
                             @endforeach
@@ -107,7 +108,7 @@
                     {!! Form::close() !!}
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>

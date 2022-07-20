@@ -12,6 +12,7 @@ use App\Models\Episode;
 use Carbon\Carbon;
 use Storage;
 use File;
+
 class MovieController extends Controller
 {
     /**
@@ -21,62 +22,66 @@ class MovieController extends Controller
      */
     public function index()
     {
-        $list = Movie::with('category','movie_genre','country','genre')->orderBy('id','DESC')->get();
+        $list = Movie::with('category', 'movie_genre', 'country', 'genre')->orderBy('id', 'DESC')->get();
         // return response()->json($list);
 
-        $path= public_path()."/json/";
-
-        if (!is_dir($path)) {  
-            mkdir($path,0777,true);  
+        $path = public_path() . "/json/";
+//        dd($path);
+        //kiểm tra xem đường dẫn có phải là thư mục ko nếu chưa tồn tại thì tạo nó ra và cấp quyền thêm sửa xóa trong thư mục đó (0777)
+        if (!is_dir($path)) {
+            mkdir($path, 0777, true);
         }
-        File::put($path.'movies.json',json_encode($list));
+        //mã hóa danh sách phim vừa lấy được và đẩy nó vào file movies.json
+        File::put($path . 'movies.json', json_encode($list));
 
         return view('admincp.movie.index', compact('list'));
     }
 
-    public function update_year(Request $request){
+    public function update_year(Request $request)
+    {
         $data = $request->all();
         $movie = Movie::find($data['id_phim']);
         $movie->year = $data['year'];
         $movie->save();
     }
-    public function update_topview(Request $request){
+
+    public function update_topview(Request $request)
+    {
         $data = $request->all();
         $movie = Movie::find($data['id_phim']);
         $movie->topview = $data['topview'];
         $movie->save();
     }
-    public function filter_topview(Request $request){
-        $data = $request->all();
-        $movie = Movie::where('topview',$data['value'])->orderBy('ngaycapnhat','DESC')->take(20)->get();
-        $output = '';
-        foreach($movie as $key => $mov){
 
-              if($mov->resolution==0){
-                                       $text = 'HD';
-                                    }elseif($mov->resolution==1){
-                                       $text = 'SD';
-                                    }
-                                    elseif($mov->resolution==2){
-                                       $text = 'HDCam';
-                                    }
-                                    elseif($mov->resolution==3){
-                                       $text = 'Cam';
-                                    }
-                                    elseif($mov->resolution==4){
-                                       $text = 'FullHD';
-                                    }else{
-                                        $text = 'Tralier';
-                                    }
-            $output.='<div class="item">
-                              <a href="'.url('phim/'.$mov->slug).'" title="'.$mov->title.'">
+    public function filter_topview(Request $request)
+    {
+        $data = $request->all();
+        $movie = Movie::where('topview', $data['value'])->orderBy('ngaycapnhat', 'DESC')->take(20)->get();
+        $output = '';
+        foreach ($movie as $key => $mov) {
+
+            if ($mov->resolution == 0) {
+                $text = 'HD';
+            } elseif ($mov->resolution == 1) {
+                $text = 'SD';
+            } elseif ($mov->resolution == 2) {
+                $text = 'HDCam';
+            } elseif ($mov->resolution == 3) {
+                $text = 'Cam';
+            } elseif ($mov->resolution == 4) {
+                $text = 'FullHD';
+            } else {
+                $text = 'Tralier';
+            }
+            $output .= '<div class="item">
+                              <a href="' . url('phim/' . $mov->slug) . '" title="' . $mov->title . '">
                                  <div class="item-link">
-                                    <img src="'.url('uploads/movie/'.$mov->image).'" class="lazy post-thumb" alt="'.$mov->title.'" title="'.$mov->title.'" />
+                                    <img src="' . url('uploads/movie/' . $mov->image) . '" class="lazy post-thumb" alt="' . $mov->title . '" title="' . $mov->title . '" />
                                     <span class="is_trailer">
-                                        '.$text.'
+                                        ' . $text . '
                                     </span>
                                  </div>
-                                 <p class="title">'.$mov->title.'</p>
+                                 <p class="title">' . $mov->title . '</p>
                               </a>
                               <div class="viewsCount" style="color: #9d9d9d;">3.2K lượt xem</div>
                               <div style="float: left;">
@@ -88,37 +93,36 @@ class MovieController extends Controller
         }
         echo $output;
     }
-     public function filter_default(Request $request){
+
+    public function filter_default(Request $request)
+    {
         $data = $request->all();
-        $movie = Movie::where('topview',0)->orderBy('ngaycapnhat','DESC')->take(20)->get();
+        $movie = Movie::where('topview', 0)->orderBy('ngaycapnhat', 'DESC')->take(20)->get();
         $output = '';
-        foreach($movie as $key => $mov){
-            
-             if($mov->resolution==0){
-                                       $text = 'HD';
-                                    }elseif($mov->resolution==1){
-                                       $text = 'SD';
-                                    }
-                                    elseif($mov->resolution==2){
-                                       $text = 'HDCam';
-                                    }
-                                    elseif($mov->resolution==3){
-                                       $text = 'Cam';
-                                    }
-                                    elseif($mov->resolution==4){
-                                       $text = 'FullHD';
-                                    }else{
-                                        $text = 'Tralier';
-                                    }
-            $output.='<div class="item">
-                              <a href="'.url('phim/'.$mov->slug).'" title="'.$mov->title.'">
+        foreach ($movie as $key => $mov) {
+
+            if ($mov->resolution == 0) {
+                $text = 'HD';
+            } elseif ($mov->resolution == 1) {
+                $text = 'SD';
+            } elseif ($mov->resolution == 2) {
+                $text = 'HDCam';
+            } elseif ($mov->resolution == 3) {
+                $text = 'Cam';
+            } elseif ($mov->resolution == 4) {
+                $text = 'FullHD';
+            } else {
+                $text = 'Tralier';
+            }
+            $output .= '<div class="item">
+                              <a href="' . url('phim/' . $mov->slug) . '" title="' . $mov->title . '">
                                  <div class="item-link">
-                                    <img src="'.url('uploads/movie/'.$mov->image).'" class="lazy post-thumb" alt="'.$mov->title.'" title="'.$mov->title.'" />
+                                    <img src="' . url('uploads/movie/' . $mov->image) . '" class="lazy post-thumb" alt="' . $mov->title . '" title="' . $mov->title . '" />
                                     <span class="is_trailer">
-                                        '.$text.'
+                                        ' . $text . '
                                     </span>
                                  </div>
-                                 <p class="title">'.$mov->title.'</p>
+                                 <p class="title">' . $mov->title . '</p>
                               </a>
                               <div class="viewsCount" style="color: #9d9d9d;">3.2K lượt xem</div>
                               <div style="float: left;">
@@ -139,21 +143,37 @@ class MovieController extends Controller
      */
     public function create()
     {
-        $category = Category::pluck('title','id');
-        $genre = Genre::pluck('title','id');
+        $category = Category::pluck('title', 'id');
+//        dd($category);
+        $genre = Genre::pluck('title', 'id');
         $list_genre = Genre::all();
-        $country = Country::pluck('title','id');
-        return view('admincp.movie.form', compact('category','genre','country','list_genre'));
+        $country = Country::pluck('title', 'id');
+        return view('admincp.movie.form', compact('category', 'genre', 'country', 'list_genre'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+//        $validated = $request->validate([
+//            'title' => 'required|unique:posts|max:255',
+//            'sotap' => 'required',
+//            'sotap' => 'required',
+//            'sotap' => 'required',
+//            'sotap' => 'required',
+//            'sotap' => 'required',
+//            'sotap' => 'required',
+//            'sotap' => 'required',
+//            'sotap' => 'required',
+//            'sotap' => 'required',
+//            'sotap' => 'required',
+//            'sotap' => 'required',
+//        ]);
+
         $data = $request->all();
         $movie = new Movie();
         $movie->title = $data['title'];
@@ -174,25 +194,29 @@ class MovieController extends Controller
         $movie->ngaytao = Carbon::now('Asia/Ho_Chi_Minh');
         $movie->ngaycapnhat = Carbon::now('Asia/Ho_Chi_Minh');
         //them nhiu the loai phim
-        foreach($data['genre'] as $key => $gen){
+        foreach ($data['genre'] as $key => $gen) {
             $movie->genre_id = $gen[0];
         }
-        
-        $get_image = $request->file('image');
 
-        if($get_image){
 
-            $get_name_image = $get_image->getClientOriginalName();
-            $name_image = current(explode('.',$get_name_image));
-            $new_image = $name_image.rand(0,9999).'.'.$get_image->getClientOriginalExtension();
-            $get_image->move('uploads/movie/',$new_image);
+        //them hinh anh
+        $get_imgage = $request->file('image');
+//        $path = 'public/uploads/movie/';
+
+        if ($get_imgage) {
+            $get_name_image = $get_imgage->getClientOriginalName(); //hinhanh1.png
+            $name_image = current(explode('.', $get_name_image));
+            $new_image = $name_image . rand(0, 9999) . '.' . $get_imgage->getClientOriginalExtension();
+            $get_imgage->move('public/uploads/movie/', $new_image);
             $movie->image = $new_image;
+
+
         }
         $movie->save();
         //them nhieu thể loại cho phim
         $movie->movie_genre()->attach($data['genre']);
         //them tap dau tien cho phim
-        
+
 
         return redirect()->route('movie.index');
     }
@@ -200,7 +224,7 @@ class MovieController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -211,25 +235,26 @@ class MovieController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $category = Category::pluck('title','id');
-        $genre = Genre::pluck('title','id');
-        $country = Country::pluck('title','id');
+        $category = Category::pluck('title', 'id');
+        $genre = Genre::pluck('title', 'id');
+        $country = Country::pluck('title', 'id');
         $list_genre = Genre::all();
-        $movie =  Movie::find($id);
+        $movie = Movie::find($id);
         $movie_genre = $movie->movie_genre;
-        return view('admincp.movie.form', compact('category','genre','country','movie','list_genre','movie_genre'));
+//        dd($movie_genre);
+        return view('admincp.movie.form', compact('category', 'genre', 'country', 'movie', 'list_genre', 'movie_genre'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -257,46 +282,63 @@ class MovieController extends Controller
 
         $get_image = $request->file('image');
 
-        if($get_image){
-            if(file_exists('uploads/movie/'.$movie->image)){
-                unlink('uploads/movie/'.$movie->image);
-            }else{
-                $get_name_image = $get_image->getClientOriginalName();
-                $name_image = current(explode('.',$get_name_image));
-                $new_image = $name_image.rand(0,9999).'.'.$get_image->getClientOriginalExtension();
-                $get_image->move('uploads/movie/',$new_image);
-                $movie->image = $new_image;
-            }
-        }
 
-        foreach($data['genre'] as $key => $gen){
-            $movie->genre_id = $gen[0];
+        //them hinh anh
+        $get_imgage = $request->file('image');
+//        $path = 'public/uploads/movie/';
+
+        if ($get_imgage) {
+
+            if (file_exists('public/uploads/movie' . $movie->image)) {
+                unlink('public/uploads/movie' . $movie->image);
+            }
+            $get_name_image = $get_imgage->getClientOriginalName(); //hinhanh1.png
+            $name_image = current(explode('.', $get_name_image));
+            $new_image = $name_image . rand(0, 9999) . '.' . $get_imgage->getClientOriginalExtension();
+            $get_imgage->move('public/uploads/movie/', $new_image);
+            $movie->image = $new_image;
+
+
         }
+        //lấy trước 1 thể loại lưu vào bảng movie,các thể loại còn lại sẽ lưu vào bảng movie_genre
+        foreach ($data['genre'] as $key => $gen) {
+
+            $movie->genre_id = $gen[0];
+
+        }
+//        dd($gen[0]);
         $movie->save();
+
+        //thêm dữ liệu trường movie_id cho bảng movie_genre bằng cách dùng sync,sync sẽ lấy danh sách id thu được có trong $data['genre']
         $movie->movie_genre()->sync($data['genre']);
-       
+
         return redirect()->route('movie.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $movie = Movie::find($id); //30
-        //xoa anh
-        if(file_exists('uploads/movie/'.$movie->image)){
-            unlink('uploads/movie/'.$movie->image);
-        }
-        //xoa the loai
-        Movie_Genre::whereIn('movie_id',[$movie->id])->delete();
-        //xoa tap phim
-        Episode::whereIn('movie_id',[$movie->id])->delete();
-        // $movie->delete();
+        //cách mới
+        $movie = Movie::find($id);
+        $movie->delete();
 
+        $movieId = $movie->id;
+
+        if (file_exists('public/uploads/movie' . $movie->image)) {
+            unlink('public/uploads/movie' . $movie->image);
+        }
+
+        //xoa the loai
+        Movie_Genre::where('movie_id', '=', $movieId)->delete();
+        //xóa tập phim
+        Episode::where('movie_id', '=', $movieId)->delete();
         return redirect()->back();
+
+
     }
 }
